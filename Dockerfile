@@ -14,6 +14,8 @@ COPY vizque.py /VizQue
 COPY setup.py /VizQue
 COPY command.py /VizQue
 
+# CMD ["python3", "/VizQue/command.py"]
+
 
 
 

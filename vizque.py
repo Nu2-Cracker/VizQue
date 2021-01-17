@@ -3,6 +3,7 @@ import xml.etree.ElementTree as ET
 from graphviz import Digraph
 import os
 
+
 def to_get_suggest_word(query: str) -> list:
     r = requests.get(f'http://www.google.com/complete/search?hl=en&q={query}&output=toolbar')
     xml = r.text  # xmlレスポンスの取得
@@ -30,7 +31,7 @@ class CreateDGnode:
             self.dg.edge(query, sug)
 
     def output(self):
-        self.dg.render(self.output_path, view=True)
+        self.dg.render(self.output_path, view=False)
 
 
 def main():

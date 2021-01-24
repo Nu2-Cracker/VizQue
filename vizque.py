@@ -18,7 +18,7 @@ def to_get_suggest_word(query: str) -> list:
 
 class CreateDGnode:
     def __init__(self):
-        self.dg = Digraph(format='pdf', engine='fdp')
+        self.dg = Digraph(format='svg', engine='fdp')
 
     def create_output_file_path(self, query):
         self.output_path = os.path.join("result", f"{query}.gv")

@@ -7,7 +7,7 @@ RUN sudo apt update
 #sudo apt install graphviz
 
 RUN mkdir /VizQue
-
+RUN mkdir /result
 RUN mkdir /VizQue/result
 COPY __init__.py /VizQue
 COPY vizque.py /VizQue

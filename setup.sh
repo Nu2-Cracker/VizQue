@@ -22,7 +22,7 @@ source ~/.zshrc
 echo "echo -n Can I delete it? [y/N]:" > uninstall.sh
 echo "read ans" >> uninstall.sh
 
-echo "if [ \"\$ans\" = \"y\"];then" >> uninstall.sh
+echo "if [ \"\$ans\" = \"y\" ]; then" >> uninstall.sh
 echo "  docker rmi -f vizque:latest" >> uninstall.sh
 echo "  docker rmi -f ubuntu:latest" >> uninstall.sh
 echo "  cd $vizque_dir/.." >> uninstall.sh

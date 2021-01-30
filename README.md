@@ -1,5 +1,9 @@
 # VizQue
 
+## pre-require  
+・Docker  
+・Git  
+
 
 # Install  
 

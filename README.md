@@ -16,7 +16,11 @@ sh setup.sh
 # How to use this app  
 
 vizque  
-[output] Please enter to search word:  [any keyword]
+[output] Please enter to search word:  [any keyword]  
+
+## Uninstall  
+If you uninstall this app, you use follow command.  
+vizque_uninstall
 
 
 

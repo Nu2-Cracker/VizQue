@@ -19,7 +19,7 @@ source ~/.zshrc
 
 #uninstallシェル
 
-echo "echo -n Can I delete it? [y/N]:" > uninstall.sh
+echo "echo -n \"Can I delete it? [y/N]:\"" > uninstall.sh
 echo "read ans" >> uninstall.sh
 
 echo "if [ \"\$ans\" = \"y\" ]; then" >> uninstall.sh

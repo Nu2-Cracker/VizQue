@@ -1,5 +1,6 @@
 #!/bin/zsh
-#docker build -t vizque:latest .
+
+docker build -t vizque:latest .
 touch vizque.sh
 
 vizque_dir=`pwd`

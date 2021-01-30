@@ -22,6 +22,3 @@ RUN python3 setup.py sdist
 RUN pip3 install -e .
 
 CMD ["/usr/local/bin/vizque"]
-
-# docker build -t vizque:latest .
-#docker run -it --rm --name vizque vizque:latest

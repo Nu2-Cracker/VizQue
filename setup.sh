@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-docker build -t vizque:latest .
+docker build -t vizque:latest . --no-cache
 touch vizque.sh
 touch uninstall.sh
 

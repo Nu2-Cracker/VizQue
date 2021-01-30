@@ -7,8 +7,10 @@ import os
 # 取得したファイルはtmpdirに生成
 # サーバーからローカルホストでブラウザに表示するように変更
 
+
 def to_get_suggest_word(query: str) -> list:
-    r = requests.get(f'http://www.google.com/complete/search?hl=en&q={query}&output=toolbar')
+    r = requests.get(
+        f'http://www.google.com/complete/search?hl=en&q={query}&output=toolbar')
     xml = r.text  # xmlレスポンスの取得
     root = ET.fromstring(xml)  # xmlデータを読み込みます
     suggest_word = [
@@ -32,6 +34,7 @@ class CreateDGnode:
         self.dg = Digraph(format='svg', engine='fdp')
 
     def create_output_file_path(self, query):
+        query = query.replace(" ", "_")
         self.output_path = os.path.join(self.tmp_path, f"{query}.gv")
 
     def add_node(self, query, suggest_word):
@@ -57,6 +60,3 @@ def main():
             dg.add_node(query, suggest_word)
 
     dg.output()
-
-
-

@@ -1,6 +1,4 @@
 
-dist
-vizque.egg-info
 __pycache__
 .idea
 tmp_result/

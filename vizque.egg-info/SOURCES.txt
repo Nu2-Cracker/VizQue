@@ -1,0 +1,8 @@
+README.md
+setup.py
+vizque.egg-info/PKG-INFO
+vizque.egg-info/SOURCES.txt
+vizque.egg-info/dependency_links.txt
+vizque.egg-info/entry_points.txt
+vizque.egg-info/requires.txt
+vizque.egg-info/top_level.txt

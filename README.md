@@ -7,7 +7,7 @@
 
 # Install  
 
-git clone https://github.com/Ru-1218/VizQue.git
+git clone https://github.com/Nu2-Cracker/VizQue.git  
 
 cd VizQue  
 

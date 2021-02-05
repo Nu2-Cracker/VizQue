@@ -8,12 +8,15 @@ RUN pacman -S sudo which gcc nim nimble git pcre openssl\
 
 RUN nimble -y  install jester
 
-RUN git clone https://github.com/Nu2-Cracker/VizQue.git
-WORKDIR /VizQue/vizque
-RUN mkdir tmp_result
 
+RUN mkdir /VizQue && mkdir -p /VizQue/vizque
+COPY setup.py /VizQue
 RUN python setup.py sdist
 RUN pip install -e .
+
+
+WORKDIR /VizQue/vizque
+
 
 
 

@@ -3,13 +3,12 @@ services:
   vizque_apps:
     build: .
     volumes:
-    - ./vizque/volume_space:/VizQue/vizque/volume_space
+    - ./vizque:/VizQue/vizque
     ports:
     - "5000:5000"
     tty: true
     stdin_open: true
     privileged: true
-    command: bash
 
 #    /usr/sbin/python
 #/usr/sbin/pip

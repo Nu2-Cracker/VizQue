@@ -4,6 +4,7 @@ from graphviz import Digraph
 import shutil
 import os
 
+
 # 取得したファイルはtmpdirに生成
 # サーバーからローカルホストでブラウザに表示するように変更
 
@@ -23,13 +24,10 @@ def to_get_suggest_word(query: str) -> list:
 
 class CreateDGnode:
     def __init__(self):
-        self.tmp_path = "tmp_result"
 
-        self.dg = Digraph(format='svg', engine='fdp')
+        self.dg = Digraph(format="svg", engine='fdp')
 
-    def create_output_file_path(self, query):
-        query = query.replace(" ", "_")
-        self.output_path = os.path.join(self.tmp_path, f"{query}.gv")
+
 
     def add_node(self, query, suggest_word):
         # 有向グラフ
@@ -39,14 +37,53 @@ class CreateDGnode:
             self.dg.edge(query, sug)
 
     def output(self):
-        self.dg.render(self.output_path, view=False)
+
+        import re
+        node_data = {}
+        id = 0
+        node_orig = []
+
+        pr = re.compile("->")
+        for i in self.dg:
+            if i == "digraph {" or i == "}":
+                continue
+            w_i = i.replace("\t", "").replace("\"", "")
+            result = pr.search(w_i)
+            if result is None:
+                node_data[w_i] = {"id": str(id), "url": f"https://www.google.com/search?q={w_i}"}
+                id += 1
+            else:
+                node_orig.append(w_i.split(" -> "))
+
+        for k in node_data.keys():
+            for i, orig in enumerate(node_orig):
+                from_ = orig[0]
+                to_ = orig[1]
+                if k == from_ or ():
+                    node_orig[i][0] = node_data[k]["id"]
+                if k == to_:
+                    node_orig[i][1] = node_data[k]["id"]
+
+        def to_edge(edge):
+            direction = {"from": edge[0], "to": edge[1]}
+            return direction
+
+        edge_data = {i: obj
+                     for i, obj in enumerate(list(map(to_edge, node_orig)))
+                     }
+
+        import json
+        with open("./jsonData/nodeData.json", mode="w") as fn:
+            json.dump(node_data, fn, indent=5, ensure_ascii=False)
+        with open("./jsonData/edgeData.json", mode="w") as fe:
+            json.dump(edge_data, fe, indent=5, ensure_ascii=False)
 
 
 def main():
     query = input("Please enter to search word: ")
     suggest_word = to_get_suggest_word(query)  # xmlレスポンスからデータの取得
     dg = CreateDGnode()
-    dg.create_output_file_path(query)
+
 
     for _ in range(7):
         for query in suggest_word:
@@ -54,3 +91,7 @@ def main():
             dg.add_node(query, suggest_word)
 
     dg.output()
+
+
+if __name__ == '__main__':
+    main()

@@ -11,6 +11,7 @@ RUN nimble -y  install jester
 RUN git clone https://github.com/Nu2-Cracker/VizQue.git
 WORKDIR /VizQue/vizque
 RUN mkdir tmp_result
+RUN mkdir volume_space
 RUN python setup.py sdist
 RUN pip install -e .
 

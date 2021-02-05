@@ -2,6 +2,8 @@ version: '2'
 services:
   vizque_apps:
     build: .
+    volumes:
+    - ./vizque/volume_space:/VizQue/vizque/volume_space
     ports:
     - "5000:5000"
     tty: true

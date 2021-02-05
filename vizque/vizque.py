@@ -23,7 +23,7 @@ def to_get_suggest_word(query: str) -> list:
 
 class CreateDGnode:
     def __init__(self):
-        self.tmp_path = os.path.join("..", "tmp_result")
+        self.tmp_path = "tmp_result"
 
         self.dg = Digraph(format='svg', engine='fdp')
 

@@ -1,6 +1,7 @@
 #!/bin/zsh
 
-docker build -t vizque:latest . --no-cache
+docker-compose up --build -d
+docker-compose exec vizque_apps "/bin/sh -c '/usr/sbin/python setup.py sdist && /usr/sbin/pip install -e .'"
 touch vizque.sh
 touch uninstall.sh
 

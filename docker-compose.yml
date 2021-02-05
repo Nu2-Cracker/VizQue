@@ -1,0 +1,13 @@
+version: '2'
+services:
+  vizque_apps:
+    build: .
+    ports:
+    - "5000:5000"
+    tty: true
+    stdin_open: true
+    privileged: true
+    command: bash
+
+#    /usr/sbin/python
+#/usr/sbin/pip

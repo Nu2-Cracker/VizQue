@@ -1,24 +1,23 @@
-FROM ubuntu
-
-ENV DEBIAN_FRONTEND=noninteractive
+FROM archlinux
 
 
-RUN apt-get update
-RUN apt-get install -y sudo \
-    python3 python3-pip python3-venv  \
-    graphviz
+RUN pacman -Syy --noconfirm
+RUN pacman -Syu --noconfirm
+RUN pacman -S sudo which gcc nim nimble git pcre openssl\
+  nodejs=14.15.4 npm python python-pip graphviz --noconfirm
+
+RUN nimble -y  install jester
+
+RUN git clone https://github.com/Nu2-Cracker/VizQue.git
+WORKDIR /VizQue/vizque
+RUN mkdir tmp_result
+RUN python setup.py sdist
+RUN pip install -e .
 
 
-SHELL ["/bin/bash", "-c"]
 
-WORKDIR /
-RUN mkdir /VizQue
-COPY __init__.py /VizQue
-COPY vizque.py /VizQue
-COPY setup.py /VizQue
-WORKDIR /VizQue
 
-RUN python3 setup.py sdist
-RUN pip3 install -e .
+#RUN python3 setup.py sdist
+#RUN pip3 install -e .
 
-CMD ["/usr/local/bin/vizque"]
+

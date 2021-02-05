@@ -6,3 +6,6 @@ tmp_result/
 *svg
 vizque.sh
 uninstall.sh
+dist
+tmp_result
+vizque.egg-info

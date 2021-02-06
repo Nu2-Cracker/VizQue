@@ -1,4 +1,3 @@
-
 __pycache__
 .idea
 tmp_result/
@@ -9,3 +8,4 @@ uninstall.sh
 dist
 tmp_result
 vizque.egg-info
+.devcontainer

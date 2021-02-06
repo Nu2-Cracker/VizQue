@@ -4,6 +4,7 @@ services:
     build: .
     volumes:
     - ./vizque:/VizQue/vizque
+    - ./nim_server:/VizQue/nim_server
     ports:
     - "5000:5000"
     tty: true

@@ -50,7 +50,7 @@ COPY setup.py /VizQue
 
 WORKDIR /VizQue
 SHELL [ "bash", "-c" ]
-RUN python3.8 setup.py sdist
+RUN python3 setup.py sdist
 RUN pip3 install -e .
 
 

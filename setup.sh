@@ -2,16 +2,14 @@
 
 docker-compose up --build -d
 docker-compose exec vizque_apps bash
-touch vizque.sh
-touch uninstall.sh
 
-mkdir tmp_result
+
+
 vizque_dir=`pwd`
 
 #実行シェル
-echo "docker run -it --rm -v $vizque_dir:/VizQue --name vizque vizque:latest" > vizque.sh
-echo "file=\`ls $vizque_dir/tmp_result/ | grep svg\`" >> vizque.sh
-echo "open $vizque_dir/tmp_result/\$file"  >> vizque.sh
+echo "cd $vizque_dir/vizque" > vizque.sh
+echo "docker-compose exec vizque_apps vizque" > vizque.sh
 
 
 echo "alias vizque=\"sh $vizque_dir/vizque.sh\"" >> ~/.zshrc
@@ -24,7 +22,9 @@ echo "echo -n \"Can I delete it? [y/N]:\"" > uninstall.sh
 echo "read ans" >> uninstall.sh
 
 echo "if [ \"\$ans\" = \"y\" ]; then" >> uninstall.sh
-echo "  docker rmi -f vizque:latest" >> uninstall.sh
+echo "  docker stop -f vizque" >> uninstall.sh
+echo "  docker rm -f vizque" >> uninstall.sh
+echo "  docker rmi -f vizque_img" >> uninstall.sh
 echo "  cd $vizque_dir/.." >> uninstall.sh
 echo "  rm -rf VizQue" >> uninstall.sh
 echo "  sed -i -e '/alias vizque/d' ~/.zshrc" >> uninstall.sh

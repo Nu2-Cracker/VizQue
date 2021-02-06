@@ -1,15 +1,14 @@
-version: '2'
+version: "2"
 services:
   vizque_apps:
+    image: vizque_img
+    container_name: vizque
     build: .
     volumes:
-    - ./vizque:/VizQue/vizque
-    - ./nim_server:/VizQue/nim_server
+      - ./vizque:/VizQue/vizque
+
     ports:
-    - "5000:5000"
+      - "5000:5000"
     tty: true
     stdin_open: true
     privileged: true
-
-#    /usr/sbin/python
-#/usr/sbin/pip

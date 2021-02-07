@@ -1,7 +1,8 @@
 #!/bin/zsh
 
 docker-compose up --build -d
-
+docker-compose exec vizque_apps bash
+npm install
 
 
 vizque_dir=`pwd`

@@ -6,9 +6,9 @@ services:
     build: .
     volumes:
       - ./vizque:/VizQue/vizque
-
+      - ./react-app:/VizQue/react-app
     ports:
-      - "5000:5000"
+      - "5555:5555"
     tty: true
     stdin_open: true
     privileged: true

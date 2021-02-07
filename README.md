@@ -7,11 +7,11 @@
 
 # Install  
 
-git clone https://github.com/Ru-1218/VizQue.git
+>git clone -b v0.0.1-dev https://github.com/Nu2-Cracker/VizQue.git && \  
+>cd VizQue && sh setup.sh  
 
-cd VizQue  
 
-sh setup.sh  
+
 
 # How to use this app  
 

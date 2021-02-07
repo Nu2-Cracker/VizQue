@@ -8,7 +8,7 @@
 # Install  
 
 Please copy follow command and paste your terminal
->git clone https://github.com/Nu2-Cracker/VizQue.git && \  
+>git clone -b vis_react https://github.com/Nu2-Cracker/VizQue.git && \  
 >cd VizQue && \  
 >sh setup.sh  
 

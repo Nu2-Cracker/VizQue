@@ -2,9 +2,7 @@
 
 docker-compose up --build -d
 docker-compose exec vizque_apps bash
-npm install
-
-
+docker-compose exec vizque_apps "npm install"
 vizque_dir=`pwd`
 
 #実行シェル

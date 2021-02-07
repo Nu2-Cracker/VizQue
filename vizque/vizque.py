@@ -50,7 +50,7 @@ class CreateDGnode:
             result = pr.search(w_i)
             if result is None:
                 n_dict = {
-                    "id": str(id), "word": w_i, "url": f"https://www.google.com/search?q={w_i}"}
+                    "id": str(id), "label": w_i, "url": f"https://www.google.com/search?q={w_i}"}
                 tmp_node.append(n_dict)  # data
                 node_data_words[w_i] = str(id)  # word(key): id(val)
                 id += 1

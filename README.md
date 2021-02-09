@@ -10,7 +10,11 @@
 Please copy follow command and paste your terminal
 >git clone https://github.com/Nu2-Cracker/VizQue.git && \  
 >cd VizQue && \  
->sh setup.sh  
+>sh setup.sh
+
+Your terminal showd bash console.Please enter this command.  
+>npm install  
+>exit
 
 
 # How to use this app  

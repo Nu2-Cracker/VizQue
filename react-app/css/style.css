@@ -3,12 +3,14 @@
   text-align: center;
 }
 .vis-react {
-  width: 65rem;
-  height: 40rem;
   border: none;
   padding: 2rem;
   display: block;
   margin: 0 auto;
+}
+
+canvas {
+  background-color: rgb(82, 102, 82);
 }
 .vis-react-title {
   text-align: center;

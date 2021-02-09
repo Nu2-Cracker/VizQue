@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import VisReact from './visreact';
 
-import "./css/stayle.css"
+import "./css/style.css"
 
 function App(){
   return (

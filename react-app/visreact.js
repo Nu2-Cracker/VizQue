@@ -1,29 +1,24 @@
 import React, { Component, Fragment } from 'react';
 import Graph from 'vis-react';
 import initialGraph from "./jsonData/graph.json"
-// Reference
-// https://codesandbox.io/s/vis-react-forked-0zjdz?file=/src/visreact.js
-// https://www.npmjs.com/package/vis-react
 
 let options = {
   layout: {
-    randomSeed: 5
+    randomSeed: 12,
+    hierarchical: false
   },
   nodes: {
-    fixed: {
-      x: false,
-      y: false
-    },
-    shape: "dot",
+
+    shape: "box",
     size: 30,
     borderWidth: 1.5,
     borderWidthSelected: 2,
     font: {
-      size: 15,
+      size: 12,
       align: "center",
       bold: {
         color: "#bbbdc0",
-        size: 34,
+        size: 25,
         vadjust: 0,
         mod: "bold"
       }
@@ -33,18 +28,11 @@ let options = {
     width: 0.5,
     color: {
       color: "#D3D3D3",
-      highlight: "#797979",
-      hover: "#797979",
-      opacity: 0.7
     },
     arrows: {
-      to: { enabled: true, scaleFactor: 1.3, type: "arrow" },
-      middle: { enabled: false, scaleFactor: 1.5, type: "arrow" },
-      from: { enabled: true, scaleFactor: 2, type: "arrow" }
-    },
-    smooth: {
-      type: "continuous",
-      roundness: 0
+      to: { enabled: true, scaleFactor: 1, type: "arrow" },
+      middle: { enabled: false, scaleFactor: 100, type: "arrow" },
+      from: { enabled: true, scaleFactor: 1, type: "arrow" }
     }
   },
   interaction: {
@@ -75,7 +63,9 @@ export default class VisReact extends Component {
     super(props);
     this.events = {
       click: function (event) {
-        console.log("click!!")
+
+        this.redirectToLearn(event, this.props.searchData);
+
       }
     };
 
@@ -83,14 +73,26 @@ export default class VisReact extends Component {
 
     this.state = {
       graph: newGraph,
-      style: { width: "1500px", height: "600px" },
+      style: { width: "1500px", height: "800px" },
       network: null
     };
+
     this.events.click = this.events.click.bind(this);
+    this.redirectToLearn = this.redirectToLearn.bind(this);
+    this.getNetwork = this.getNetwork.bind(this);
+  }
+
+  redirectToLearn(params, searchData){
+    let index = this.state.network.getNodeAt(params.pointer.DOM);
+    let url = this.state.graph.nodes[index]["url"];
+    window.open(url, '_blank')
   }
 
 
- 
+  getNetwork(data){
+    this.setState({network: data})
+  };
+
 
   render() {
     return (
@@ -100,6 +102,7 @@ export default class VisReact extends Component {
           graph = {this.state.graph}
           style={this.state.style}
           options = {options}
+          getNetwork={this.getNetwork}
           events={this.events}
           vis={(vis) => (this.vis = vis)}
         />
@@ -109,6 +112,7 @@ export default class VisReact extends Component {
 
 
 }
+
 
 
 

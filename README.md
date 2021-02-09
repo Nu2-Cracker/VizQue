@@ -13,7 +13,7 @@ Please copy follow command and paste your terminal
 >sh setup.sh
 
 Your terminal showd bash console.Please enter this command.  
->npm install  
+>npm install; nohup npm run start &  
 >exit
 
 

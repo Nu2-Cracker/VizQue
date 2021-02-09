@@ -2,12 +2,12 @@
 
 docker-compose up --build -d
 docker-compose exec vizque_apps bash
-docker-compose exec vizque_apps "npm install"
 vizque_dir=`pwd`
 
 #実行シェル
 echo "cd $vizque_dir" > vizque.sh
 echo "docker-compose exec vizque_apps vizque" >> vizque.sh
+echo "open http://0.0.0.0:5555" >> vizque.sh
 
 
 echo "alias vizque=\"sh $vizque_dir/vizque.sh\"" >> ~/.zshrc

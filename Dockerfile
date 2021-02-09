@@ -63,7 +63,4 @@ WORKDIR /VizQue/react-app
 EXPOSE 5555
 
 
-#RUN python3 setup.py sdist
-#RUN pip3 install -e .
-
 

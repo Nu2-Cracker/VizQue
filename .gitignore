@@ -10,3 +10,4 @@ tmp_result
 vizque.egg-info
 .devcontainer
 .DS_Store
+nohup.out

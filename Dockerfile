@@ -1,15 +1,21 @@
 FROM ubuntu:20.04
 
 
-
-
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update &&\
   apt-get upgrade -y && \
-  apt-get install -y tzdata &&\
-  apt-get install -y git curl vim &&\
   rm -rf /var/lib/apt/lists/*
+
+
+RUN apt update && apt upgrade -y
+#タイムゾーン選択の回避
+RUN apt-get install -y tzdata
+
+#必要なモジュールをインストール
+RUN apt install -y git curl build-essential wget vim\
+  python3.8 python3-setuptools python3-pip
+
 
 ENV NVM_DIR /usr/local/.nvm
 ENV NODE_VERSION 10.23.2
@@ -26,7 +32,6 @@ RUN source $NVM_DIR/nvm.sh && \
   nvm use default && npm i -g  npm@5.10.0
 
 
-
 # Add nvm.sh to .bashrc for startup...
 RUN echo "source ${NVM_DIR}/nvm.sh" > $HOME/.bashrc && \
   source $HOME/.bashrc
@@ -38,10 +43,18 @@ ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
 ENV PATH  $NVM_DIR/v$NODE_VERSION/bin:$PATH
 
 
+#ソースコードから最新版のNimをビルドする
+RUN mkdir /nim_bild
+WORKDIR /nim_bild
+RUN wget https://nim-lang.org/download/nim-1.4.2.tar.xz
+RUN tar -Jxvf nim-1.4.2.tar.xz
+WORKDIR /nim_bild/nim-1.4.2
+RUN sh build.sh && \
+  bin/nim c koch && \
+  ./koch boot -d:release && \
+  ./koch tools
 
-RUN apt update && apt upgrade -y
-RUN apt install -y python3.8 python3-setuptools python3-pip
-
+ENV PATH  /nim_bild/nim-1.4.2/bin:$PATH
 
 
 
@@ -57,7 +70,8 @@ RUN python3 setup.py sdist
 RUN pip3 install -e .
 
 
-WORKDIR /VizQue/react-app
+# WORKDIR /VizQue/react-app
+WORKDIR /VizQue/vizque
 
 
 EXPOSE 5555

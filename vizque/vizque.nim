@@ -6,6 +6,7 @@ import
   xmlparser,
   xmltree,
   tables,
+  strutils,
   json
 
 
@@ -126,8 +127,14 @@ tmp_from_id = id
 
 var querys: seq[string] = querygetter(reader)
 
-echo querys
-
+for query in querys:
+  #tmp_from_idは、G.nodesのラベルとqueryが一致するものの
+  #idを使用
+  var graph_data = G.nodes #G.nodesをdeep copy
+  for n in graph_data:
+    if n["label"] == query:
+      tmp_from_id = parseInt(n["id"])
+      var result: seq[string] = querygetter(query)
 
 
 

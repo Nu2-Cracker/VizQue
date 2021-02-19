@@ -35,6 +35,15 @@ let options = {
       from: { enabled: true, scaleFactor: 1, type: "arrow" }
     }
   },
+  physics: {
+    barnesHut: {
+      gravitationalConstant: -10000,
+      centralGravity: 1,
+      springLength: 50,
+      avoidOverlap: 1
+    },
+    stabilization: { iterations: 2500 }
+  },
   interaction: {
     hover: true,
     hoverConnectedEdges: true,

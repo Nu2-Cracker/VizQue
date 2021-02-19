@@ -14,18 +14,24 @@ type
   QueryDatas = Table[string, string]
   SecTables = seq[QueryDatas]
 
+type
+  GraphDatas = ref object
+    nodes: SecTables
+    edges: SecTables
+
 
 var
-  nodes = newSeq[QueryDatas]()
-  edges = newSeq[QueryDatas]()
   node: QueryDatas = initTable[string, string]()
+  node_init = node
   edge: QueryDatas = initTable[string, string]()
+  edge_init = edge
   graph = initTable[string, SecTables]()
   # querylist: seq[string] = newSeq[string]()
   #Node
   ci:int  = 0
   id: int = 0
   #edge
+  tmp_from_id = 0
   from_id: int = 0
   to_id: int = 0
 
@@ -34,117 +40,93 @@ var
 # echo "Please enter to search word: "
 # let reader =  readLine(stdin)
 
-# test
-var reader = "whale shark"
+
+#オブジェクト定義
+var G:GraphDatas = new GraphDatas
+
+proc create_node(query: string, id: int) =
+  #queryからnodeを作成する
+
+  #ノードの作成
+  node["id"] = $id
+  node["label"] = query
+  node["url"] = "https://www.google.com/search?q=${query}" % {"query": query}.newStringTable
+  #nodesに格納
+  G.nodes.add(node)
+  #ノードの初期化
+  node = node_init
 
 
-
-proc querygetter(query:string): QueryDatas =
-  var searchQuery: QueryDatas = initTable[string, string]()
-  var rep_query = query.replace(re"\s+", "%20")
-  var url = "http://www.google.com/complete/search?hl=en&q=${query}&output=toolbar" % {"query": rep_query}.newStringTable
-
-  #ネットワークグラフ(ノード)
-  # 同じラベルのノードは追加しない
-  var first_query_i: string = ""
-  block:
-    var checks = newSeq[QueryDatas]()
-    checks = nodes
-    var tmp_query: seq[string]
-    if len(nodes) != 0: #1巡目はnodesに入っていないため<=チェックいる？？スルーされるのでそもそもこの条件いらないのでは?
-      for d in checks:
-        if d["label"] == query:
-          first_query_i = d["id"]
-          # ここでfirst_queryidの処理をしないとそもそも値が変わるから意味ないのでは
-          #first_queryを指定することで一つ繋ぎのネットワークを実装する
-          #その代わり新たなnodeを作るひつよなし
+proc create_edge(from_id: int, to_id: int) =
+  #queryからedgeを作成する
+  edge["from"] = $from_id
+  edge["to"] = $to_id
+  #edgesに格納
+  G.edges.add(edge)
+  #edgeの初期化
+  edge = edge_init
 
 
-
-
-
-    else:
-      # 1巡目
-      node["id"] = $id
-      first_query_i = $id
-      node["label"] = query
-      var g_url = "https://www.google.com/search?q=${query}" % {"query": query}.newStringTable
-      node["url"] = g_url
-      nodes.add(node)
-      inc(id)
-
-      # 検索キーワードとそのnode,edgeデータを返す
-
-
-
-
-
-
-  # 次の検索するキーワードを返す
-  let client = newHttpClient()
-  let response = client.request(url)
-  var body: string = response.body
-  let xmls = parseXml(body)
-  let tag_suggestion = xmls.findAll("suggestion")
-  for tag in tag_suggestion:
-    #tagからdata属性(関連キーワード)を取得
-    let relationQuery = tag.attr("data")
-    if relationQuery != query:
-      searchQuery[relationQuery] = $id
-
-      node["id"] = $id
-      node["label"] = relationQuery
-      var g_url = "https://www.google.com/search?q=${query}" % {"query": relationQuery}.newStringTable
-      node["url"] = g_url
-      nodes.add(node)
-
-      edge["from"] = first_query_i
-      edge["to"] = $id
-
-      edges.add(edge)
-      inc(id)
-  return searchQuery
-
-
-
-
-let querytable = querygetter(reader)# 次の検索候補の取得
-# block:
-#   graph["nodes"] = nodes
-#   graph["edges"] = edges
-#   let to_json = %* graph
-#   let f = open("../react-app/jsonData/graph.json", FileMode.fmWrite)
-#   f.write(to_json.pretty(indent=5))
-#   f.close()
-
-var index = 0
-for res in querytable.keys:
-  # echo res
-  if index == 2:
-    break
-  var floor2 = querygetter(res)
+proc outputGraphData(nodes: SecTables, edges: SecTables) =
+  #jsonに結果を出力する
   graph["nodes"] = nodes
   graph["edges"] = edges
 
   block:
+    #json用オブジェクトの作成
     let to_json = %* graph
     let f = open("../react-app/jsonData/graph.json", FileMode.fmWrite)
+    #jsonファイルに書き込み
     f.write(to_json.pretty(indent=5))
     f.close()
-  inc(index)
+      
 
 
 
 
+proc querygetter(query: string): seq[string] =
+  #検索結果を格納するsequence
+  var searchQuery = newSeq[string]()
+  #空白を埋めてget用URLの作成
+  var rep_query = query.replace(re"\s+", "%20")
+  var url = "http://www.google.com/complete/search?hl=en&q=${query}&output=toolbar" % {"query": rep_query}.newStringTable
 
-# graph["nodes"] = nodes
-# graph["edges"] = edges
+  # httpクライエントの作成
+  let client = newHttpClient()
+  let response = client.request(url)
+  #bodyを取得
+  var body: string = response.body
+  #xmlをパース
+  let xmls = parseXml(body)
+  #suggestion タグの取得
+  var tag_suggestion = xmls.findAll("suggestion")
+  tag_suggestion = tag_suggestion[1..^1] #頭はqueryなので含まない
+  for tag in tag_suggestion:
+    inc(id)
+    #tagからdata属性(関連キーワード)を取得
+    let relationQuery = tag.attr("data")
+    #relationqueryからnodeを作成
+    create_node(relationQuery, id)
+    #tmp_from_idをfrom_id, idをto_iとしてedgeを作成
+    create_edge(tmp_from_id, id)
 
-# block:
-#   let to_json = %* graph
-#   let f = open("../react-app/jsonData/graph.json", FileMode.fmWrite)
-#   f.write(to_json.pretty(indent=5))
-#   f.close()
+    searchQuery.add(relationQuery)
+  #jsonに出力
+  outputGraphData(G.nodes, G.edges)
+
+  return searchQuery #検索クエリ候補を返す
+
+
+# test
+var reader = "whale shark"
+create_node(reader, id)
+#from側のidをセット
+tmp_from_id = id
+
+
+var querys: seq[string] = querygetter(reader)
+
+echo querys
 
 
 

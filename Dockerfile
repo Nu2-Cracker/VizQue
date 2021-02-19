@@ -13,8 +13,7 @@ RUN apt update && apt upgrade -y
 RUN apt-get install -y tzdata
 
 #必要なモジュールをインストール
-RUN apt install -y git curl build-essential wget vim\
-  python3.8 python3-setuptools python3-pip
+RUN apt install -y git curl build-essential wget vim
 
 
 ENV NVM_DIR /usr/local/.nvm
@@ -62,12 +61,9 @@ ENV PATH  /nim_bild/nim-1.4.2/bin:$PATH
 RUN mkdir /VizQue && \
   mkdir -p /VizQue/vizque &&\
   mkdir -p /VizQue/react-app
-COPY setup.py /VizQue
 
 WORKDIR /VizQue
 SHELL [ "bash", "-c" ]
-RUN python3 setup.py sdist
-RUN pip3 install -e .
 
 
 # WORKDIR /VizQue/react-app

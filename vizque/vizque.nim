@@ -7,11 +7,10 @@ import
   xmltree,
   tables,
   strutils,
-  json
+  JSON
 
 
 type
-  Json = object
   QueryDatas = Table[string, string]
   SecTables = seq[QueryDatas]
 
@@ -29,10 +28,9 @@ var
   graph = initTable[string, SecTables]()
   # querylist: seq[string] = newSeq[string]()
   #Node
-  ci:int  = 0
   id: int = 0
+  node_permission = true
   #edge
-  tmp_from_id = 0
   from_id: int = 0
   to_id: int = 0
 
@@ -82,6 +80,16 @@ proc outputGraphData(nodes: SecTables, edges: SecTables) =
     f.close()
       
 
+proc check_label(query: string, node:SecTables ): int =
+  #既存のlabelと一致するかチェック=>一致する場合,
+  #to_id=既存のid, no=> to_id=現在のid+1を返す
+  for n in node:
+    if query == n["label"]:
+      node_permission = false #Nodeは作成しない
+      return parseInt(n["id"])
+
+  inc(id)
+  return id
 
 
 
@@ -102,18 +110,21 @@ proc querygetter(query: string): seq[string] =
   #suggestion タグの取得
   var tag_suggestion = xmls.findAll("suggestion")
   tag_suggestion = tag_suggestion[1..^1] #頭はqueryなので含まない
+
+  var graph_data = G.nodes #G.nodesをdeep copy
   for tag in tag_suggestion:
-    inc(id)
-    #tagからdata属性(関連キーワード)を取得
-    let relationQuery = tag.attr("data")
-    #relationqueryからnodeを作成
-    create_node(relationQuery, id)
-    #tmp_from_idをfrom_id, idをto_iとしてedgeを作成
-    create_edge(tmp_from_id, id)
+    let relationQuery = tag.attr("data") #tagからdata属性(関連キーワード)を取得
+    to_id = check_label(relationQuery, graph_data) #既存のlabelと一致するかチェック
+
+    if node_permission:
+      create_node(relationQuery, to_id) #trueならrelationqueryからnodeを作成
+    #from_idをfrom_id, to_idをto_idとしてedgeを作成
+    create_edge(from_id, to_id)
 
     searchQuery.add(relationQuery)
   #jsonに出力
   outputGraphData(G.nodes, G.edges)
+  node_permission = true #初期化
 
   return searchQuery #検索クエリ候補を返す
 
@@ -122,19 +133,19 @@ proc querygetter(query: string): seq[string] =
 var reader = "whale shark"
 create_node(reader, id)
 #from側のidをセット
-tmp_from_id = id
+from_id = id
 
 
 var querys: seq[string] = querygetter(reader)
 
 for query in querys:
-  #tmp_from_idは、G.nodesのラベルとqueryが一致するものの
+  #from_idは、G.nodesのラベルとqueryが一致するものの
   #idを使用
   var graph_data = G.nodes #G.nodesをdeep copy
   for n in graph_data:
     if n["label"] == query:
-      tmp_from_id = parseInt(n["id"])
-      var result: seq[string] = querygetter(query)
+      from_id = parseInt(n["id"])
+      var _ = querygetter(query)
 
 
 

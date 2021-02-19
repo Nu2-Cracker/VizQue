@@ -37,10 +37,10 @@ let options = {
   },
   physics: {
     barnesHut: {
-      gravitationalConstant: -10000,
+      gravitationalConstant: -30000,
       centralGravity: 1,
-      springLength: 50,
-      avoidOverlap: 1
+      springLength: 150,
+      avoidOverlap: -1
     },
     stabilization: { iterations: 2500 }
   },

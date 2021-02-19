@@ -1,4 +1,4 @@
-# nim c -o:output -r vizque.nim
+# nim c -o:output_vizque -r vizque.nim
 import
   httpClient,
   strtabs,
@@ -35,9 +35,7 @@ var
   to_id: int = 0
 
 
-#検索ワードの取得
-# echo "Please enter to search word: "
-# let reader =  readLine(stdin)
+
 
 
 #オブジェクト定義
@@ -74,7 +72,7 @@ proc outputGraphData(nodes: SecTables, edges: SecTables) =
   block:
     #json用オブジェクトの作成
     let to_json = %* graph
-    let f = open("../react-app/jsonData/graph.json", FileMode.fmWrite)
+    let f = open("/VizQue/react-app/jsonData/graph.json", FileMode.fmWrite)
     #jsonファイルに書き込み
     f.write(to_json.pretty(indent=5))
     f.close()
@@ -129,8 +127,9 @@ proc querygetter(query: string): seq[string] =
   return searchQuery #検索クエリ候補を返す
 
 
-# test
-var reader = "whale shark"
+#検索ワードの取得
+echo "Please enter to search word: "
+let reader =  readLine(stdin)
 create_node(reader, id)
 #from側のidをセット
 from_id = id

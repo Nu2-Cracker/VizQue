@@ -8,7 +8,7 @@ vizque_dir=`pwd`
 
 #実行シェル
 echo "cd $vizque_dir" > vizque.sh
-echo "docker-compose exec vizque_apps vizque" >> vizque.sh
+echo "docker-compose exec vizque_apps \"bash -c './output'\" " >> vizque.sh
 echo "open http://0.0.0.0:5555" >> vizque.sh
 
 

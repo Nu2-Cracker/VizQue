@@ -3,6 +3,13 @@ FROM ubuntu:20.04
 
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
+RUN mkdir /VizQue && \
+  mkdir -p /VizQue/vizque &&\
+  mkdir -p /VizQue/react-app
+
+WORKDIR /VizQue/vizque
+COPY ./vizque/vizque.nim /VizQue/vizque
+
 RUN DEBIAN_FRONTEND=noninteractive apt-get update &&\
   apt-get upgrade -y && \
   rm -rf /var/lib/apt/lists/*
@@ -53,27 +60,24 @@ RUN sh build.sh && \
   ./koch boot -d:release && \
   ./koch tools
 
+WORKDIR /VizQue/vizque
 ENV PATH  /nim_bild/nim-1.4.2/bin:$PATH
 
 
 
 
-RUN mkdir /VizQue && \
-  mkdir -p /VizQue/vizque &&\
-  mkdir -p /VizQue/react-app
+
+
 
 WORKDIR /VizQue
 SHELL [ "bash", "-c" ]
 
+
+
+
+
+# WORKDIR /VizQue/react-app
 WORKDIR /VizQue/vizque
-COPY ./vizque/vizque.nim /VizQue/vizque
-RUN nim c -o:output_vizque -r vizque.nim
-RUN cp vizque_apps /usr/bin
-
-
-
-WORKDIR /VizQue/react-app
-# WORKDIR /VizQue/vizque
 
 
 EXPOSE 5555

@@ -1,6 +1,7 @@
 #!/bin/zsh
 
 docker-compose up --build -d
+# nim c -o:output_vizque vizque.nim
 docker-compose exec vizque_apps bash
 # npm install; nohup npm run start &
 # exit
@@ -8,7 +9,7 @@ vizque_dir=`pwd`
 
 #実行シェル
 echo "cd $vizque_dir" > vizque.sh
-echo "docker-compose exec vizque_apps \"bash -c './output'\" " >> vizque.sh
+echo "docker-compose exec vizque_apps ./output_vizque" >> vizque.sh
 echo "open http://0.0.0.0:5555" >> vizque.sh
 
 

@@ -8,7 +8,7 @@
 # Install  
 
 Please copy follow command and paste your terminal
->git clone -b vizque_nim https://github.com/Nu2-Cracker/VizQue.git && \  
+>git clone -b vizque-nim https://github.com/Nu2-Cracker/VizQue.git && \  
 >cd VizQue && \  
 >sh setup.sh
 
